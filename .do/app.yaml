@@ -1,0 +1,13 @@
+name: to-do-session-json-rpc-client-web
+region: sfo
+static_sites:
+  - build_command: npm run build
+    environment_slug: node-js
+    github:
+      branch: main
+      deploy_on_push: true
+      repo: intrepion/intrepion-to-do-session-json-rpc-client-web-typescript-react-typescript
+    name: session-json-rpc-client-web
+    routes:
+      - path: /
+    source_dir: /
