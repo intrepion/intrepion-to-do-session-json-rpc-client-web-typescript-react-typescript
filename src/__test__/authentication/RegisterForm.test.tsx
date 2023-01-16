@@ -82,6 +82,7 @@ describe("Registration Form", () => {
     userEvent.type(confirmInput, password);
     userEvent.click(registerButton);
 
+    // Assert
     const message = await screen.findByText("Successful registration!");
     expect(message).toBeInTheDocument();
   });
