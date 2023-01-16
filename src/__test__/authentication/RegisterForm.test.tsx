@@ -13,6 +13,7 @@ describe("Registration Form", () => {
 
   beforeEach(() => {
     render(<RegisterForm />);
+
     let confirmInputElement = screen.queryByLabelText("Confirm:");
     if (!confirmInputElement) {
       throw new Error("Confirm Input not found");
@@ -64,7 +65,6 @@ describe("Registration Form", () => {
     const username = v4();
     const email = v4() + "@" + v4() + ".com";
     const password = v4();
-
     const mockApiCall = jest.fn().mockResolvedValue({
       data: {
         id: "1",
@@ -72,7 +72,6 @@ describe("Registration Form", () => {
         result: {},
       },
     });
-
     axios.get = mockApiCall;
 
     // Act
@@ -85,5 +84,128 @@ describe("Registration Form", () => {
     // Assert
     const message = await screen.findByText("Successful registration!");
     expect(message).toBeInTheDocument();
+  });
+
+  it("displays missing username message with no username", async () => {
+    // Arrange
+
+    // Act
+    userEvent.click(registerButton);
+
+    // Assert
+    const usernameMissing = screen.getByText("Username is missing.");
+    expect(usernameMissing).toBeInTheDocument();
+    const errors = await screen.findByText("There were registration errors.");
+    expect(errors).toBeInTheDocument();
+  });
+
+  it("displays missing username message with spaces", async () => {
+    // Arrange
+    userEvent.type(usernameInput, " ");
+
+    // Act
+    userEvent.click(registerButton);
+
+    // Assert
+    const usernameMissing = screen.getByText("Username is missing.");
+    expect(usernameMissing).toBeInTheDocument();
+    const errors = await screen.findByText("There were registration errors.");
+    expect(errors).toBeInTheDocument();
+  });
+
+  it("displays missing email message with no email", async () => {
+    // Arrange
+
+    // Act
+    userEvent.click(registerButton);
+
+    // Assert
+    const emailMissing = screen.getByText("Email is missing.");
+    expect(emailMissing).toBeInTheDocument();
+    const errors = await screen.findByText("There were registration errors.");
+    expect(errors).toBeInTheDocument();
+  });
+
+  it("displays missing email message with spaces", async () => {
+    // Arrange
+    userEvent.type(emailInput, " ");
+
+    // Act
+    userEvent.click(registerButton);
+
+    // Assert
+    const emailMissing = screen.getByText("Email is missing.");
+    expect(emailMissing).toBeInTheDocument();
+    const errors = await screen.findByText("There were registration errors.");
+    expect(errors).toBeInTheDocument();
+  });
+
+  it("displays missing password message with no password", async () => {
+    // Arrange
+
+    // Act
+    userEvent.click(registerButton);
+
+    // Assert
+    const passwordMissing = screen.getByText("Password is missing.");
+    expect(passwordMissing).toBeInTheDocument();
+    const errors = await screen.findByText("There were registration errors.");
+    expect(errors).toBeInTheDocument();
+  });
+
+  it("displays missing password message with spaces", async () => {
+    // Arrange
+    userEvent.type(passwordInput, " ");
+
+    // Act
+    userEvent.click(registerButton);
+
+    // Assert
+    const passwordMissing = screen.getByText("Password is missing.");
+    expect(passwordMissing).toBeInTheDocument();
+    const errors = await screen.findByText("There were registration errors.");
+    expect(errors).toBeInTheDocument();
+  });
+
+  it("displays missing confirm message with no confirm", async () => {
+    // Arrange
+
+    // Act
+    userEvent.click(registerButton);
+
+    // Assert
+    const confirmMissing = screen.getByText("Confirm is missing.");
+    expect(confirmMissing).toBeInTheDocument();
+    const errors = await screen.findByText("There were registration errors.");
+    expect(errors).toBeInTheDocument();
+  });
+
+  it("displays missing confirm message with spaces", async () => {
+    // Arrange
+    userEvent.type(confirmInput, " ");
+
+    // Act
+    userEvent.click(registerButton);
+
+    // Assert
+    const confirmMissing = screen.getByText("Confirm is missing.");
+    expect(confirmMissing).toBeInTheDocument();
+    const errors = await screen.findByText("There were registration errors.");
+    expect(errors).toBeInTheDocument();
+  });
+
+  it("displays not matching confirm message with not matching password", async () => {
+    // Arrange
+    userEvent.type(passwordInput, "abc");
+    userEvent.type(confirmInput, "def");
+
+    // Act
+    userEvent.click(registerButton);
+
+    // Assert
+    const confirmMissing = screen.getByText("Confirm does not match password.");
+    expect(confirmMissing).toBeInTheDocument();
+    const errors = await screen.findByText("There were registration errors.");
+    expect(errors).toBeInTheDocument();
   });
 });
